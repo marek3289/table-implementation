@@ -1,4 +1,4 @@
-<h2 align="center">Tabble Implementation</h2>
+<h2 align="center">Table Implementation</h2>
 
 <p align="center">
   <img src="https://imgbbb.com/images/2020/05/30/Zrzut-ekranu-2020-05-30-o-18.24.46.png" alt="table-implementation" />
