@@ -11,7 +11,7 @@
 
 ## Project Overview
 
-This is my implementation of table created in React using Creat-React-App. Application fetching companies data using axios and displays in a rows. Each row has its own ID, name, city, sum of total, average and last month incomes. At the top of table you can change length of displayed rows on screen and change pages by pagination. You can also use search bar to filter by desired word. Table has implemented sorting. As a user, you can sort table ascending or descending by clicking on column header. 
+This is my implementation of table created in React using Creat-React-App. Application fetching companies data using axios and displays it in a rows. Each row has its own ID, name, city, sum of total, average and last month incomes. At the top of table you can change length of displayed rows on screen and change pages by pagination. You can also use search bar to filter by desired word. Table has implemented sorting. As a user, you can sort table ascending or descending by clicking on column header. 
 
 ## 🚀 Quick start
 
