@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Cell } from 'components';
 import { mixins } from 'styles';
-import { useAxios } from 'hooks';
 import { incomeUtils, constants } from 'utils';
 
 const StyledRow = styled.tr`
@@ -28,44 +27,21 @@ const StyledLoading = styled.div`
 
 const Row = ({ item, length }) => {
   const { headings } = constants;
-  const { id } = item;
-
-  const { fetchedItems } = useAxios(
-    `${process.env.REACT_APP_API_INCOME}/${id}`,
-  );
-  const [loading, setLoading] = useState(true);
-  const [entries, setEntries] = useState([]);
-
-  useEffect(() => {
-    const { incomes } = fetchedItems;
-    const {
-      sumTotalIncome,
-      sumAverageIncome,
-      sumLastMonthIncome,
-    } = incomeUtils;
-
-    if (incomes) {
-      const values = {
-        totalIncome: sumTotalIncome(incomes),
-        averageIncome: sumAverageIncome(incomes),
-        lastMonthIncome: sumLastMonthIncome(incomes),
-      };
-
-      setEntries({ ...item, ...values });
-      setLoading(false);
-    }
-  }, [fetchedItems, item]);
+  const { formatToUsd } = incomeUtils;
 
   return (
     <StyledRow>
-      {loading ? (
+      {!item ? (
         <StyledTableData colSpan={length}>
           <StyledLoading>Loading Entries...</StyledLoading>
         </StyledTableData>
       ) : (
         <>
           {headings.map((heading) => {
-            const value = entries[heading];
+            const value = item[heading];
+
+            if (typeof item[heading] === 'number' && heading !== 'id')
+              return <Cell key={value}>{formatToUsd(value)}</Cell>;
 
             if (heading === 'id')
               return (
@@ -73,6 +49,7 @@ const Row = ({ item, length }) => {
                   {value}
                 </Cell>
               );
+
             return <Cell key={value}>{value}</Cell>;
           })}
         </>

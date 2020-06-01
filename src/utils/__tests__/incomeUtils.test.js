@@ -11,7 +11,7 @@ describe('income utils tests', () => {
     let incomes = [{ value: '3' }, { value: '3' }];
     expect(getValues(incomes)).toEqual(['3', '3']);
 
-    incomes = [{ value: '12' }];
+    incomes = [{ value: '12', val: '6' }];
     expect(getValues(incomes)).toEqual(['12']);
   });
   it('format number value to USD', () => {
@@ -31,42 +31,42 @@ describe('income utils tests', () => {
     value = '274715';
     expect(formatToUsd(value)).toBe('$274,715.00');
   });
-  it('get total formatted income from all values from object', () => {
+  it('get sum of all values from object', () => {
     let incomes = [{ value: '3' }, { value: '3' }];
-    expect(sumTotalIncome(incomes)).toBe('$6.00');
+    expect(sumTotalIncome(incomes)).toBe(6);
 
     incomes = [{ value: 3 }, { value: '7' }];
-    expect(sumTotalIncome(incomes)).toBe('$10.00');
+    expect(sumTotalIncome(incomes)).toBe(10);
   });
-  it('get average formatted income from all values', () => {
+  it('get average sum from all values', () => {
     let incomes = [{ value: '3' }, { value: '3' }];
-    expect(sumAverageIncome(incomes)).toBe('$3.00');
+    expect(sumAverageIncome(incomes)).toBe(3);
 
     incomes = [{ value: 3 }];
-    expect(sumAverageIncome(incomes)).toBe('$3.00');
+    expect(sumAverageIncome(incomes)).toBe(3);
 
     incomes = [{ value: 10 }, { value: '20' }, { value: '10' }, { value: 20 }];
-    expect(sumAverageIncome(incomes)).toBe('$15.00');
+    expect(sumAverageIncome(incomes)).toBe(15);
   });
   it('get formatted income from previous month', () => {
-    // do tests with mocked new Date();   !!!
+    // mockDate also mocking incomes date, thats why test failing !!!
 
-    // const mockedDate = new Date(2020, 2, 2)
-    // jest.spyOn(Date.prototype, 'Date').and.returnValue(mockedDate);
+    // const mockDate = new Date('2020-05-01T22:10:33.249Z');
+    // const spy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
 
     let incomes = [
-      { value: '20', date: '2020-04-01T22:10:33.249Z' },
-      { value: 20, date: '2020-05-29T16:38:55.265Z' },
+      { value: '20', date: '2020-05-01T22:10:33.249Z' },
       { value: '20', date: '2020-04-02T09:33:32.148Z' },
-      { value: 20, date: '2020-03-05T07:39:27.872Z' },
+      { value: 20, date: '2020-06-05T07:39:27.872Z' },
     ];
-    expect(sumLastMonthIncome(incomes)).toBe('$40.00');
+    expect(sumLastMonthIncome(incomes)).toBe(20);
 
     incomes = [
       { value: '5', date: '2019-04-01T22:10:33.249Z' },
       { value: 10, date: '2021-04-29T16:38:55.265Z' },
     ];
 
-    expect(sumLastMonthIncome(incomes)).toBe('$0.00');
+    expect(sumLastMonthIncome(incomes)).toBe(0);
+    // spy.mockRestore();
   });
 });

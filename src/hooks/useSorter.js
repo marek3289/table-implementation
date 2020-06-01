@@ -18,6 +18,8 @@ const useSorter = (itemList, activeCol, activeDir) => {
         comparison = 1;
       } else if (a[activeCol] < b[activeCol]) {
         comparison = -1;
+      } else if (a[activeCol] === b[activeCol]) {
+        return a.id - b.id;
       }
       return activeDir === 'desc' ? comparison * -1 : comparison;
     });

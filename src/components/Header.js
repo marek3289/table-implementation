@@ -35,9 +35,9 @@ const Header = ({ setPostPerPage, searchInput, setSearchInput }) => {
     <StyledWrapper>
       <StyledSelectWrapper>
         <Paragraph>Show</Paragraph>
-        <StyledSelect onChange={handleSelect}>
+        <StyledSelect data-testid="select" onChange={handleSelect}>
           {constants.itemsPerPage.map((option) => (
-            <option key={option} value={option}>
+            <option data-testid="select-option" key={option} value={option}>
               {option}
             </option>
           ))}

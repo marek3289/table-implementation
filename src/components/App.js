@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 import { DataTable, Header } from 'components';
 import { mixins } from 'styles';
-import { useAxios } from 'hooks';
-import { tableUtils } from 'utils';
+import { tableUtils, incomeUtils } from 'utils';
 
 const StyledWrapper = styled.div`
   ${mixins.flexCenter};
@@ -15,7 +15,54 @@ const StyledWrapper = styled.div`
 `;
 
 const App = ({ match }) => {
-  const { fetchedItems } = useAxios(process.env.REACT_APP_API_COMPANIES);
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const results = [];
+
+    const {
+      sumTotalIncome,
+      sumAverageIncome,
+      sumLastMonthIncome,
+    } = incomeUtils;
+
+    const { CancelToken } = axios;
+    const source = CancelToken.source();
+
+    const fetchItems = async () => {
+      try {
+        const { data } = await axios.get(process.env.REACT_APP_API_COMPANIES, {
+          cancelToken: source.token,
+        });
+        data.forEach(async (company) => {
+          const record = await axios.get(
+            `${process.env.REACT_APP_API_INCOME}/${company.id}`,
+          );
+          const { incomes } = record.data;
+
+          const totalIncome = sumTotalIncome(incomes);
+          const averageIncome = sumAverageIncome(incomes);
+          const lastMonthIncome = sumLastMonthIncome(incomes);
+
+          results.push({
+            ...company,
+            totalIncome,
+            averageIncome,
+            lastMonthIncome,
+          });
+          const copyResultList = [...results];
+          setCompanies(copyResultList);
+        });
+      } catch (err) {
+        if (axios.isCancel(err)) {
+          return;
+        }
+        throw err;
+      }
+    };
+
+    fetchItems();
+  }, []);
 
   const [postPerPage, setPostPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState('');
@@ -41,7 +88,7 @@ const App = ({ match }) => {
           setSearchInput={setSearchInput}
         />
         <DataTable
-          companies={filterByValue(fetchedItems, searchInput)}
+          companies={filterByValue(companies, searchInput)}
           currentPage={currentPage}
           postPerPage={postPerPage}
         />

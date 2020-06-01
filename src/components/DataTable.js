@@ -80,7 +80,12 @@ const DataTable = ({ companies, currentPage, postPerPage }) => {
         </thead>
         <tbody>
           {itemList.map((item) => (
-            <Row key={item.id} item={item} length={headings.length} />
+            <Row
+              data-testid="single-company"
+              key={item.id}
+              item={item}
+              length={headings.length}
+            />
           ))}
         </tbody>
       </TableLayout>
