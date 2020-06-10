@@ -15,10 +15,11 @@ This is my implementation of table created in React using Creat-React-App. Appli
 
 ## 🚀 Quick start
 
-Use Git to clone repository, then navigate into your new site’s directory and start it up.
+Use Git to clone repository, then navigate into your new site’s directory and add your api keys to .env.local file. After that you finally can start it up!
 
     git clone https://github.com/marek3289/table-implementation
     cd table-implementation
+    open .env.local 
     yarn start
     
 ## Available scripts
